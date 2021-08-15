@@ -7,15 +7,22 @@ import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 
 
 class MainActivity : AppCompatActivity() {
-    lateinit var nameEditText: EditText;
-    lateinit var emailEditText : EditText;
-    lateinit var passwordEditText: EditText;
-    lateinit var registerButton : Button;
-    lateinit var alreadyHaveAnAccTextView : TextView;
+    private lateinit var nameEditText: EditText;
+    private lateinit var emailEditText : EditText;
+    private lateinit var passwordEditText: EditText;
+    private lateinit var registerButton : Button;
+    private lateinit var alreadyHaveAnAccTextView : TextView;
+
+    private lateinit var auth: FirebaseAuth
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,20 +38,38 @@ class MainActivity : AppCompatActivity() {
         passwordEditText = findViewById(R.id.passwordEditText)
         registerButton = findViewById(R.id.registerButton)
         alreadyHaveAnAccTextView = findViewById(R.id.alreadyHaveAnAccTextView)
+        auth = Firebase.auth
     }
 
     private fun initOnCLickListeners() {
         registerButton.setOnClickListener {
-            val email = emailEditText.text.toString()
-            val password = passwordEditText.text.toString()
-
-            Log.d("MAIN", "Email: $email")
-            Log.d("MAIN", "Password: $password")
+            performRegister()
         }
 
         alreadyHaveAnAccTextView.setOnClickListener {
             openLogInDialog()
         }
+    }
+
+    private fun performRegister() {
+        val email = emailEditText.text.toString()
+        val password = passwordEditText.text.toString()
+
+        if (email.isEmpty() || password.isEmpty()) {
+            Toast.makeText(this, "Fill the gaps before register", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        Log.d("MAIN", "Email: $email")
+        Log.d("MAIN", "Password: $password")
+
+        auth.createUserWithEmailAndPassword(email, password)
+            .addOnCompleteListener(this) { task ->
+                if (!task.isSuccessful) return@addOnCompleteListener
+                Toast.makeText(baseContext, "Created: ${task.result?.user?.uid}", Toast.LENGTH_SHORT).show()
+            }.addOnFailureListener {
+                Toast.makeText(baseContext, "Failed: ${it.message}", Toast.LENGTH_SHORT).show()
+            }
     }
 
     private fun openLogInDialog() {
@@ -62,10 +87,22 @@ class MainActivity : AppCompatActivity() {
         val dialogButton : Button = view.findViewById(R.id.dialogLogInButton)
 
         dialogButton.setOnClickListener {
-            Log.d("DIALOG", "ONCLICK")
+            performLogIn(dialogLogin.text.toString(), dialogPassword.text.toString())
         }
 
         dialog.show()
+    }
+
+    private fun performLogIn(email : String, password : String) {
+        auth.signInWithEmailAndPassword(email, password)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    Toast.makeText(baseContext, "Authentication success", Toast.LENGTH_SHORT).show()
+                } else {
+                    Toast.makeText(baseContext, "Authentication failed", Toast.LENGTH_SHORT).show()
+                    return@addOnCompleteListener
+                }
+            }
     }
 }
 
