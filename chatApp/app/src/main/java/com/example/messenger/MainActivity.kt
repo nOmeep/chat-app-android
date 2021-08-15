@@ -21,9 +21,19 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         supportActionBar?.hide()
         setContentView(R.layout.activity_main)
-
         initViews()
+        initOnCLickListeners()
+    }
 
+    private fun initViews() {
+        nameEditText = findViewById(R.id.nameEditText)
+        emailEditText = findViewById(R.id.loginEditText)
+        passwordEditText = findViewById(R.id.passwordEditText)
+        registerButton = findViewById(R.id.registerButton)
+        alreadyHaveAnAccTextView = findViewById(R.id.alreadyHaveAnAccTextView)
+    }
+
+    private fun initOnCLickListeners() {
         registerButton.setOnClickListener {
             val email = emailEditText.text.toString()
             val password = passwordEditText.text.toString()
@@ -35,14 +45,6 @@ class MainActivity : AppCompatActivity() {
         alreadyHaveAnAccTextView.setOnClickListener {
             openLogInDialog()
         }
-    }
-
-    private fun initViews() {
-        nameEditText = findViewById(R.id.nameEditText)
-        emailEditText = findViewById(R.id.loginEditText)
-        passwordEditText = findViewById(R.id.passwordEditText)
-        registerButton = findViewById(R.id.registerButton)
-        alreadyHaveAnAccTextView = findViewById(R.id.alreadyHaveAnAccTextView)
     }
 
     private fun openLogInDialog() {
