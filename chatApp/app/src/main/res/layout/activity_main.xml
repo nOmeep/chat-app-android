@@ -80,17 +80,15 @@
         app:layout_constraintRight_toRightOf="@id/registerButton"
         app:layout_constraintTop_toBottomOf="@id/registerButton" />
 
-    <Button
-        android:id="@+id/choosePhotoButton"
+    <ImageButton
+        android:id="@+id/choosePhotoImageButton"
         android:layout_width="150dp"
         android:layout_height="150dp"
         android:layout_marginTop="30dp"
-        android:background="@drawable/round_choose_photo_button"
-        android:text="@string/choose_photo"
-        android:textAlignment="center"
-        android:textColor="#81D4FA"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:background="@drawable/round_text_view_for_acc"
+        android:src="@android:drawable/ic_input_add"
         app:layout_constraintBottom_toTopOf="@id/nameEditText"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

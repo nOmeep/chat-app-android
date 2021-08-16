@@ -1,13 +1,15 @@
 package com.example.messenger
 
+import android.graphics.ImageDecoder
+import android.graphics.drawable.BitmapDrawable
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.provider.MediaStore
 import android.util.Log
 import android.view.View
-import android.widget.Button
-import android.widget.EditText
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
@@ -20,9 +22,11 @@ class MainActivity : AppCompatActivity() {
     private lateinit var passwordEditText: EditText
 
     private lateinit var registerButton : Button
-    private lateinit var choosePhotoButton : Button
+    private lateinit var choosePhotoImageButton : ImageButton
 
     private lateinit var alreadyHaveAnAccTextView : TextView
+
+    private var selectedPhotoUri : Uri? = null
 
     private lateinit var auth: FirebaseAuth
 
@@ -35,13 +39,15 @@ class MainActivity : AppCompatActivity() {
         initOnCLickListeners()
     }
 
+    // Some kind of inits
+
     private fun initViews() {
         nameEditText = findViewById(R.id.nameEditText)
         emailEditText = findViewById(R.id.loginEditText)
         passwordEditText = findViewById(R.id.passwordEditText)
 
         registerButton = findViewById(R.id.registerButton)
-        choosePhotoButton = findViewById(R.id.choosePhotoButton)
+        choosePhotoImageButton = findViewById(R.id.choosePhotoImageButton)
 
         alreadyHaveAnAccTextView = findViewById(R.id.alreadyHaveAnAccTextView)
 
@@ -53,14 +59,28 @@ class MainActivity : AppCompatActivity() {
             performRegister()
         }
 
-        choosePhotoButton.setOnClickListener {
-            Log.d("PHOTO", "SHOW PHOTO")
-        }
-
         alreadyHaveAnAccTextView.setOnClickListener {
             openLogInDialog()
         }
+
+        choosePhotoImageButton.setOnClickListener {
+            getAction.launch("image/*")
+        }
     }
+
+    // Photo suction
+
+    private val getAction = registerForActivityResult(ActivityResultContracts.GetContent()) {   pickedUri ->
+        selectedPhotoUri = pickedUri
+
+        val source = ImageDecoder.createSource(this.contentResolver, pickedUri)
+        val bitmap = ImageDecoder.decodeBitmap(source)
+
+        val bitmapDrawable = BitmapDrawable(applicationContext.resources, bitmap)
+        choosePhotoImageButton.background = bitmapDrawable
+    }
+
+    // Firebase and Dialogs
 
     private fun performRegister() {
         val email = emailEditText.text.toString()
