@@ -15,11 +15,14 @@ import com.google.firebase.ktx.Firebase
 
 
 class MainActivity : AppCompatActivity() {
-    private lateinit var nameEditText: EditText;
-    private lateinit var emailEditText : EditText;
-    private lateinit var passwordEditText: EditText;
-    private lateinit var registerButton : Button;
-    private lateinit var alreadyHaveAnAccTextView : TextView;
+    private lateinit var nameEditText: EditText
+    private lateinit var emailEditText : EditText
+    private lateinit var passwordEditText: EditText
+
+    private lateinit var registerButton : Button
+    private lateinit var choosePhotoButton : Button
+
+    private lateinit var alreadyHaveAnAccTextView : TextView
 
     private lateinit var auth: FirebaseAuth
 
@@ -36,14 +39,22 @@ class MainActivity : AppCompatActivity() {
         nameEditText = findViewById(R.id.nameEditText)
         emailEditText = findViewById(R.id.loginEditText)
         passwordEditText = findViewById(R.id.passwordEditText)
+
         registerButton = findViewById(R.id.registerButton)
+        choosePhotoButton = findViewById(R.id.choosePhotoButton)
+
         alreadyHaveAnAccTextView = findViewById(R.id.alreadyHaveAnAccTextView)
+
         auth = Firebase.auth
     }
 
     private fun initOnCLickListeners() {
         registerButton.setOnClickListener {
             performRegister()
+        }
+
+        choosePhotoButton.setOnClickListener {
+            Log.d("PHOTO", "SHOW PHOTO")
         }
 
         alreadyHaveAnAccTextView.setOnClickListener {

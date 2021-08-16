@@ -5,4 +5,5 @@
     <string name="password">password</string>
     <string name="register">Register</string>
     <string name="login">login</string>
+    <string name="choose_photo">Choose\nphoto</string>
 </resources>
