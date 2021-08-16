@@ -77,7 +77,7 @@ class MainActivity : AppCompatActivity() {
         val bitmap = ImageDecoder.decodeBitmap(source)
 
         val bitmapDrawable = BitmapDrawable(applicationContext.resources, bitmap)
-        choosePhotoImageButton.background = bitmapDrawable
+        choosePhotoImageButton.setImageDrawable(bitmapDrawable)
     }
 
     // Firebase and Dialogs
@@ -98,9 +98,16 @@ class MainActivity : AppCompatActivity() {
             .addOnCompleteListener(this) { task ->
                 if (!task.isSuccessful) return@addOnCompleteListener
                 Toast.makeText(baseContext, "Created: ${task.result?.user?.uid}", Toast.LENGTH_SHORT).show()
-            }.addOnFailureListener {
+
+                uploadImageToFirerbase()
+            }
+            .addOnFailureListener {
                 Toast.makeText(baseContext, "Failed: ${it.message}", Toast.LENGTH_SHORT).show()
             }
+    }
+
+    private fun uploadImageToFirerbase() {
+
     }
 
     private fun openLogInDialog() {
