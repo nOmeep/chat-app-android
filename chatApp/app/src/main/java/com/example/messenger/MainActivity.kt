@@ -1,7 +1,9 @@
 package com.example.messenger
 
+import android.graphics.Color
 import android.graphics.ImageDecoder
 import android.graphics.drawable.BitmapDrawable
+import android.graphics.drawable.Drawable
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -14,6 +16,7 @@ import androidx.appcompat.app.AlertDialog
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import de.hdodenhof.circleimageview.CircleImageView
 
 
 class MainActivity : AppCompatActivity() {
@@ -22,7 +25,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var passwordEditText: EditText
 
     private lateinit var registerButton : Button
-    private lateinit var choosePhotoImageButton : ImageButton
+    private lateinit var choosePhotoButton : Button
 
     private lateinit var alreadyHaveAnAccTextView : TextView
 
@@ -47,7 +50,7 @@ class MainActivity : AppCompatActivity() {
         passwordEditText = findViewById(R.id.passwordEditText)
 
         registerButton = findViewById(R.id.registerButton)
-        choosePhotoImageButton = findViewById(R.id.choosePhotoImageButton)
+        choosePhotoButton = findViewById(R.id.choosePhotoButton)
 
         alreadyHaveAnAccTextView = findViewById(R.id.alreadyHaveAnAccTextView)
 
@@ -63,7 +66,7 @@ class MainActivity : AppCompatActivity() {
             openLogInDialog()
         }
 
-        choosePhotoImageButton.setOnClickListener {
+        choosePhotoButton.setOnClickListener {
             getAction.launch("image/*")
         }
     }
@@ -76,8 +79,10 @@ class MainActivity : AppCompatActivity() {
         val source = ImageDecoder.createSource(this.contentResolver, pickedUri)
         val bitmap = ImageDecoder.decodeBitmap(source)
 
-        val bitmapDrawable = BitmapDrawable(applicationContext.resources, bitmap)
-        choosePhotoImageButton.setImageDrawable(bitmapDrawable)
+        val circleImage : CircleImageView = findViewById(R.id.selectedPhotoInRegister)
+        circleImage.setImageBitmap(bitmap)
+        circleImage.bringToFront()
+        choosePhotoButton.visibility = View.GONE
     }
 
     // Firebase and Dialogs

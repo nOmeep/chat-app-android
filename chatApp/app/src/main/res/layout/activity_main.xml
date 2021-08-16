@@ -11,7 +11,7 @@
         android:id="@+id/nameEditText"
         android:layout_width="256dp"
         android:layout_height="48dp"
-        android:layout_marginTop="240dp"
+        android:layout_marginTop="250dp"
         android:background="@drawable/round_edit_text"
         android:ems="10"
         android:hint="@string/your_name"
@@ -80,15 +80,27 @@
         app:layout_constraintRight_toRightOf="@id/registerButton"
         app:layout_constraintTop_toBottomOf="@id/registerButton" />
 
-    <ImageButton
-        android:id="@+id/choosePhotoImageButton"
+    <Button
+        android:id="@+id/choosePhotoButton"
         android:layout_width="150dp"
         android:layout_height="150dp"
-        android:layout_marginTop="30dp"
-        android:background="@drawable/round_text_view_for_acc"
-        android:src="@android:drawable/ic_input_add"
+        android:layout_marginTop="60dp"
+        android:background="@drawable/round_choose_photo_button"
+        android:text="@string/choose_photo"
+        android:textColor="#81D4FA"
         app:layout_constraintBottom_toTopOf="@id/nameEditText"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintLeft_toLeftOf="@id/nameEditText"
+        app:layout_constraintRight_toRightOf="@id/nameEditText"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/selectedPhotoInRegister"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_marginTop="60dp"
+        app:layout_constraintBottom_toTopOf="@id/nameEditText"
+        app:layout_constraintLeft_toLeftOf="@id/nameEditText"
+        app:layout_constraintRight_toRightOf="@id/nameEditText"
         app:layout_constraintTop_toTopOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
