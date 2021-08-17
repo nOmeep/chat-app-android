@@ -4,6 +4,7 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="app/src/main/res/drawable/bg_linear_layout.xml" value="0.371875" />
+        <entry key="app/src/main/res/drawable/create_new_acc_textview_bg.xml" value="0.371875" />
         <entry key="app/src/main/res/drawable/round_choose_photo_button.xml" value="0.371875" />
         <entry key="app/src/main/res/drawable/round_edit_text.xml" value="0.371875" />
         <entry key="app/src/main/res/drawable/round_text_view_for_acc.xml" value="0.371875" />

@@ -1,5 +1,6 @@
 package com.example.messenger
 
+import android.app.Dialog
 import android.graphics.Color
 import android.graphics.ImageDecoder
 import android.graphics.drawable.BitmapDrawable
@@ -10,6 +11,7 @@ import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
 import android.view.View
+import android.view.WindowManager
 import android.widget.*
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
@@ -32,7 +34,6 @@ class MainActivity : AppCompatActivity() {
     private var selectedPhotoUri : Uri? = null
 
     private lateinit var auth: FirebaseAuth
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,38 +60,64 @@ class MainActivity : AppCompatActivity() {
 
     private fun initOnCLickListeners() {
         registerButton.setOnClickListener {
-            performRegister()
+            //performRegister()
         }
 
         alreadyHaveAnAccTextView.setOnClickListener {
-            openLogInDialog()
+            //openLogInDialog()
+            openRegisterDialog()
         }
 
         choosePhotoButton.setOnClickListener {
-            getAction.launch("image/*")
+            //getPickedPhoto.launch("image/*")
         }
     }
 
     // Photo suction
 
-    private val getAction = registerForActivityResult(ActivityResultContracts.GetContent()) {   pickedUri ->
+    private lateinit var circleImage : CircleImageView
+    private lateinit var dialogChoosePhotoButton : Button
+
+    private val getPickedPhoto = registerForActivityResult(ActivityResultContracts.GetContent()) { pickedUri ->
         selectedPhotoUri = pickedUri
 
-        val source = ImageDecoder.createSource(this.contentResolver, pickedUri)
-        val bitmap = ImageDecoder.decodeBitmap(source)
-
-        val circleImage : CircleImageView = findViewById(R.id.selectedPhotoInRegister)
-        circleImage.setImageBitmap(bitmap)
+        circleImage.setImageURI(pickedUri)
         circleImage.bringToFront()
-        choosePhotoButton.visibility = View.GONE
+        dialogChoosePhotoButton.visibility = View.GONE
     }
 
     // Firebase and Dialogs
 
-    private fun performRegister() {
-        val email = emailEditText.text.toString()
-        val password = passwordEditText.text.toString()
+    private fun openRegisterDialog() {
+        val view = View.inflate(this@MainActivity, R.layout.register_dialog_layout, null)
 
+        val builder = AlertDialog.Builder(this@MainActivity)
+        builder.setView(view)
+
+        val dialog = builder.create()
+        dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+        dialog.setCancelable(true)
+
+        val dialogRegisterName : EditText = view.findViewById(R.id.dialogRegisterNameEditText)
+        val dialogLoginEditText : EditText = view.findViewById(R.id.dialogRegisterLoginEditText)
+        val dialogPasswordEditText : EditText = view.findViewById(R.id.dialogRegisterPasswordEditText)
+        val dialogRegisterButton : Button = view.findViewById(R.id.dialogRegisterRegisterButton)
+        dialogChoosePhotoButton = view.findViewById(R.id.dialogRegisterChoosePhotoButton)
+        circleImage = view.findViewById(R.id.dialogSelectedPhotoInRegister)
+
+
+        dialogChoosePhotoButton.setOnClickListener {
+            getPickedPhoto.launch("image/*")
+        }
+
+        dialogRegisterButton.setOnClickListener {
+            performRegister(dialogLoginEditText.text.toString(), dialogPasswordEditText.text.toString())
+        }
+
+        dialog.show()
+    }
+
+    private fun performRegister(email : String, password: String) {
         if (email.isEmpty() || password.isEmpty()) {
             Toast.makeText(this, "Fill the gaps before register", Toast.LENGTH_SHORT).show()
             return
