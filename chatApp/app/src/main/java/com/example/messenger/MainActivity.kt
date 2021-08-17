@@ -64,8 +64,10 @@ class MainActivity : AppCompatActivity() {
         selectedPhotoUri = pickedUri
 
         circleImage.setImageURI(pickedUri)
-        circleImage.bringToFront()
-        dialogChoosePhotoButton.visibility = View.GONE
+
+        if (pickedUri != null) {
+            dialogChoosePhotoButton.visibility = View.INVISIBLE
+        }
     }
 
     // Firebase and Dialogs
@@ -130,6 +132,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun performLogIn(email : String, password : String) {
+        if (email.isEmpty() || password.isEmpty()) {
+            Toast.makeText(this, "Fill the gaps before log in", Toast.LENGTH_SHORT).show()
+            return
+        }
+
         auth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
