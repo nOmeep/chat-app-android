@@ -1,17 +1,10 @@
 package com.example.messenger
 
-import android.app.Dialog
-import android.graphics.Color
-import android.graphics.ImageDecoder
-import android.graphics.drawable.BitmapDrawable
-import android.graphics.drawable.Drawable
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.provider.MediaStore
 import android.util.Log
 import android.view.View
-import android.view.WindowManager
 import android.widget.*
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
@@ -22,14 +15,12 @@ import de.hdodenhof.circleimageview.CircleImageView
 
 
 class MainActivity : AppCompatActivity() {
-    private lateinit var nameEditText: EditText
     private lateinit var emailEditText : EditText
     private lateinit var passwordEditText: EditText
 
-    private lateinit var registerButton : Button
-    private lateinit var choosePhotoButton : Button
+    private lateinit var createAccountTextView: TextView
 
-    private lateinit var alreadyHaveAnAccTextView : TextView
+    private lateinit var mainLogInButton :Button
 
     private var selectedPhotoUri : Uri? = null
 
@@ -40,37 +31,28 @@ class MainActivity : AppCompatActivity() {
         supportActionBar?.hide()
         setContentView(R.layout.activity_main)
         initViews()
-        initOnCLickListeners()
-    }
 
-    // Some kind of inits
-
-    private fun initViews() {
-        nameEditText = findViewById(R.id.nameEditText)
-        emailEditText = findViewById(R.id.loginEditText)
-        passwordEditText = findViewById(R.id.passwordEditText)
-
-        registerButton = findViewById(R.id.registerButton)
-        choosePhotoButton = findViewById(R.id.choosePhotoButton)
-
-        alreadyHaveAnAccTextView = findViewById(R.id.alreadyHaveAnAccTextView)
-
-        auth = Firebase.auth
-    }
-
-    private fun initOnCLickListeners() {
-        registerButton.setOnClickListener {
-            //performRegister()
-        }
-
-        alreadyHaveAnAccTextView.setOnClickListener {
-            //openLogInDialog()
+        createAccountTextView.setOnClickListener {
             openRegisterDialog()
         }
 
-        choosePhotoButton.setOnClickListener {
-            //getPickedPhoto.launch("image/*")
+        mainLogInButton.setOnClickListener {
+            performLogIn(emailEditText.text.toString(), passwordEditText.text.toString())
         }
+
+    }
+
+    // Some kind of initiations
+
+    private fun initViews() {
+        emailEditText = findViewById(R.id.loginEditText)
+        passwordEditText = findViewById(R.id.passwordEditText)
+
+        createAccountTextView = findViewById(R.id.createAccountTextView)
+
+        mainLogInButton = findViewById(R.id.mainLogInButton)
+
+        auth = Firebase.auth
     }
 
     // Photo suction
@@ -111,16 +93,18 @@ class MainActivity : AppCompatActivity() {
         }
 
         dialogRegisterButton.setOnClickListener {
-            performRegister(dialogLoginEditText.text.toString(), dialogPasswordEditText.text.toString())
+            if (performRegister(dialogLoginEditText.text.toString(), dialogPasswordEditText.text.toString())) {
+                dialog.dismiss()
+            }
         }
 
         dialog.show()
     }
 
-    private fun performRegister(email : String, password: String) {
+    private fun performRegister(email : String, password: String) : Boolean {
         if (email.isEmpty() || password.isEmpty()) {
             Toast.makeText(this, "Fill the gaps before register", Toast.LENGTH_SHORT).show()
-            return
+            return false
         }
 
         Log.d("MAIN", "Email: $email")
@@ -129,6 +113,7 @@ class MainActivity : AppCompatActivity() {
         auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener(this) { task ->
                 if (!task.isSuccessful) return@addOnCompleteListener
+
                 Toast.makeText(baseContext, "Created: ${task.result?.user?.uid}", Toast.LENGTH_SHORT).show()
 
                 uploadImageToFirerbase()
@@ -136,31 +121,12 @@ class MainActivity : AppCompatActivity() {
             .addOnFailureListener {
                 Toast.makeText(baseContext, "Failed: ${it.message}", Toast.LENGTH_SHORT).show()
             }
+
+        return true
     }
 
     private fun uploadImageToFirerbase() {
 
-    }
-
-    private fun openLogInDialog() {
-        val view = View.inflate(this, R.layout.log_in_dialog, null)
-
-        val builder = AlertDialog.Builder(this)
-        builder.setView(view)
-
-        val dialog = builder.create()
-        dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
-        dialog.setCancelable(true)
-
-        val dialogLogin : EditText = view.findViewById(R.id.dialogLoginEditText)
-        val dialogPassword : EditText = view.findViewById(R.id.dialogPasswordEditText)
-        val dialogButton : Button = view.findViewById(R.id.dialogLogInButton)
-
-        dialogButton.setOnClickListener {
-            performLogIn(dialogLogin.text.toString(), dialogPassword.text.toString())
-        }
-
-        dialog.show()
     }
 
     private fun performLogIn(email : String, password : String) {

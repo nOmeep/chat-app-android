@@ -1,10 +1,11 @@
 <resources>
     <string name="app_name">Messenger</string>
-    <string name="register_string"><u>Have an account?</u></string>
+    <string name="register_string"><u>Create an account?</u></string>
     <string name="password">password</string>
     <string name="register">Register</string>
     <string name="login">login</string>
     <string name="choose_photo">Choose\nphoto</string>
     <string name="your_name">Your name</string>
     <string name="create_new_account">CREATE NEW ACCOUNT</string>
+    <string name="log_in">Log In</string>
 </resources>

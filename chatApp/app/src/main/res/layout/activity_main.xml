@@ -8,40 +8,26 @@
     tools:context=".MainActivity">
 
     <EditText
-        android:id="@+id/nameEditText"
-        android:layout_width="256dp"
-        android:layout_height="48dp"
-        android:layout_marginTop="250dp"
-        android:background="@drawable/round_edit_text"
-        android:ems="10"
-        android:hint="@string/your_name"
-        android:importantForAutofill="no"
-        android:inputType="textPersonName"
-        android:textAlignment="center"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.496"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <EditText
         android:id="@+id/loginEditText"
         android:layout_width="256dp"
-        android:layout_height="48dp"
-        android:layout_marginTop="16dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="230dp"
         android:background="@drawable/round_edit_text"
         android:ems="10"
         android:hint="@string/login"
+        android:importantForAutofill="no"
         android:inputType="textPersonName"
         android:textAlignment="center"
-        app:layout_constraintEnd_toEndOf="@+id/nameEditText"
-        app:layout_constraintStart_toStartOf="@+id/nameEditText"
-        app:layout_constraintTop_toBottomOf="@+id/nameEditText"
-        android:importantForAutofill="no" />
+        app:layout_constraintBottom_toTopOf="@id/passwordEditText"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        tools:layout_editor_absoluteX="77dp" />
 
     <EditText
         android:id="@+id/passwordEditText"
         android:layout_width="256dp"
-        android:layout_height="48dp"
+        android:layout_height="60dp"
         android:layout_marginTop="16dp"
         android:background="@drawable/round_edit_text"
         android:ems="10"
@@ -54,51 +40,32 @@
         app:layout_constraintTop_toBottomOf="@+id/loginEditText" />
 
     <Button
-        android:id="@+id/registerButton"
+        android:id="@+id/mainLogInButton"
         android:layout_width="256dp"
-        android:layout_height="48dp"
+        android:layout_height="60dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
         android:layout_marginTop="16dp"
         android:background="@drawable/round_edit_text"
-        android:text="@string/register"
+        android:text="@string/log_in"
         android:textAlignment="center"
-        android:textColor="#81D4FA"
+        android:textColor="@color/btn_color"
+        android:textSize="16sp"
         app:layout_constraintLeft_toLeftOf="@id/passwordEditText"
         app:layout_constraintRight_toRightOf="@id/passwordEditText"
         app:layout_constraintTop_toBottomOf="@id/passwordEditText" />
 
     <TextView
-        android:id="@+id/alreadyHaveAnAccTextView"
+        android:id="@+id/createAccountTextView"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
         android:text="@string/register_string"
+        android:layout_marginTop="16dp"
         android:textAlignment="center"
         android:textColor="#37474F"
-        app:layout_constraintLeft_toLeftOf="@id/registerButton"
-        app:layout_constraintRight_toRightOf="@id/registerButton"
-        app:layout_constraintTop_toBottomOf="@id/registerButton" />
-
-    <Button
-        android:id="@+id/choosePhotoButton"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:layout_marginTop="60dp"
-        android:background="@drawable/round_choose_photo_button"
-        android:text="@string/choose_photo"
-        android:textColor="#81D4FA"
-        app:layout_constraintBottom_toTopOf="@id/nameEditText"
-        app:layout_constraintLeft_toLeftOf="@id/nameEditText"
-        app:layout_constraintRight_toRightOf="@id/nameEditText"
-        app:layout_constraintTop_toTopOf="parent"/>
-
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/selectedPhotoInRegister"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:layout_marginTop="60dp"
-        app:layout_constraintBottom_toTopOf="@id/nameEditText"
-        app:layout_constraintLeft_toLeftOf="@id/nameEditText"
-        app:layout_constraintRight_toRightOf="@id/nameEditText"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:textSize="18sp"
+        app:layout_constraintTop_toBottomOf="@id/mainLogInButton"
+        app:layout_constraintLeft_toLeftOf="@id/mainLogInButton"
+        app:layout_constraintRight_toRightOf="@id/mainLogInButton" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
