@@ -6,4 +6,6 @@
     <string name="register">Register</string>
     <string name="login">login</string>
     <string name="choose_photo">Choose\nphoto</string>
+    <string name="your_name">Your name</string>
+    <string name="create_new_account">Create new account</string>
 </resources>

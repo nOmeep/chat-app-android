@@ -4,6 +4,6 @@
 
     <solid android:color="@color/main_activity_bg"/>
 
-    <corners android:radius="7dp"/>
+    <corners android:radius="10dp"/>
 
 </shape>
