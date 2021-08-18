@@ -10,8 +10,11 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.FirebaseStorage
 import de.hdodenhof.circleimageview.CircleImageView
+import java.util.*
 
 
 class MainActivity : AppCompatActivity() {
@@ -59,6 +62,7 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var circleImage : CircleImageView
     private lateinit var dialogChoosePhotoButton : Button
+    private lateinit var dialogRegisterName : EditText
 
     private val getPickedPhoto = registerForActivityResult(ActivityResultContracts.GetContent()) { pickedUri ->
         selectedPhotoUri = pickedUri
@@ -82,12 +86,12 @@ class MainActivity : AppCompatActivity() {
         dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
         dialog.setCancelable(true)
 
-        val dialogRegisterName : EditText = view.findViewById(R.id.dialogRegisterNameEditText)
         val dialogLoginEditText : EditText = view.findViewById(R.id.dialogRegisterLoginEditText)
         val dialogPasswordEditText : EditText = view.findViewById(R.id.dialogRegisterPasswordEditText)
         val dialogRegisterButton : Button = view.findViewById(R.id.dialogRegisterRegisterButton)
         dialogChoosePhotoButton = view.findViewById(R.id.dialogRegisterChoosePhotoButton)
         circleImage = view.findViewById(R.id.dialogSelectedPhotoInRegister)
+        dialogRegisterName = view.findViewById(R.id.dialogRegisterNameEditText)
 
 
         dialogChoosePhotoButton.setOnClickListener {
@@ -95,7 +99,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         dialogRegisterButton.setOnClickListener {
-            if (performRegister(dialogLoginEditText.text.toString(), dialogPasswordEditText.text.toString())) {
+            if (performRegister(dialogLoginEditText.text.toString(), dialogPasswordEditText.text.toString(), dialogRegisterName.text.toString())) {
                 dialog.dismiss()
             }
         }
@@ -103,14 +107,11 @@ class MainActivity : AppCompatActivity() {
         dialog.show()
     }
 
-    private fun performRegister(email : String, password: String) : Boolean {
-        if (email.isEmpty() || password.isEmpty()) {
+    private fun performRegister(email : String, password: String, name : String) : Boolean {
+        if (email.isEmpty() || password.isEmpty() || name.isEmpty()) {
             Toast.makeText(this, "Fill the gaps before register", Toast.LENGTH_SHORT).show()
             return false
         }
-
-        Log.d("MAIN", "Email: $email")
-        Log.d("MAIN", "Password: $password")
 
         auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener(this) { task ->
@@ -118,17 +119,13 @@ class MainActivity : AppCompatActivity() {
 
                 Toast.makeText(baseContext, "Created: ${task.result?.user?.uid}", Toast.LENGTH_SHORT).show()
 
-                uploadImageToFirerbase()
+                uploadImageToStorage()
             }
             .addOnFailureListener {
                 Toast.makeText(baseContext, "Failed: ${it.message}", Toast.LENGTH_SHORT).show()
             }
 
         return true
-    }
-
-    private fun uploadImageToFirerbase() {
-
     }
 
     private fun performLogIn(email : String, password : String) {
@@ -147,9 +144,45 @@ class MainActivity : AppCompatActivity() {
                 }
             }
     }
+
+    // Uploading image to firebase
+    private fun uploadImageToStorage() {
+        if (selectedPhotoUri == null) return
+
+        val fileName = UUID.randomUUID().toString()
+
+        val storageReference = FirebaseStorage.getInstance().getReference("/images/$fileName")
+        val putFileAction = storageReference.putFile(selectedPhotoUri!!)
+        putFileAction.addOnSuccessListener { file ->
+            Log.d("EASY", "IMAGE ${file.metadata?.path}")
+
+            storageReference.downloadUrl.addOnSuccessListener {
+                Log.d("EASY", "File loc $it")
+
+                saveUserToDataBase(it.toString())
+            }
+        }.addOnFailureListener {
+            Toast.makeText(baseContext, "Failed to load file", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    // Saving to our custom database on Firebase
+    private fun saveUserToDataBase(profileImage: String) {
+        val uid = auth.uid ?: ""
+
+        val ref = FirebaseDatabase.getInstance().getReference("/users/$uid")
+
+        val user = User(uid, dialogRegisterName.text.toString(), profileImage)
+
+        ref.setValue(user)
+            .addOnSuccessListener {
+                Log.d("USERS", "We saved user to firebase database")
+            }.addOnFailureListener {
+                Log.d("USERS", "We failed to save user to firebase database")
+                Toast.makeText(baseContext, "Failed to add user to database", Toast.LENGTH_SHORT).show()
+            }
+    }
 }
-
-
 
 
 

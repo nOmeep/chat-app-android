@@ -51,6 +51,11 @@ dependencies {
     // When using the BoM, you don't specify versions in Firebase library dependencies
     implementation 'com.google.firebase:firebase-auth-ktx'
 
+    // Storage firebase
+    implementation 'com.google.firebase:firebase-storage-ktx'
+
+    // Firebase database
+    implementation 'com.google.firebase:firebase-database-ktx'
 }
 
 apply plugin: 'com.google.gms.google-services'
