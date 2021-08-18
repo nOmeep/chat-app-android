@@ -1,5 +1,6 @@
 package com.example.messenger
 
+import android.content.Intent
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -11,8 +12,10 @@ import androidx.appcompat.app.AlertDialog
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.ktx.storage
 import de.hdodenhof.circleimageview.CircleImageView
 import java.util.*
 
@@ -26,8 +29,6 @@ class MainActivity : AppCompatActivity() {
     private lateinit var mainLogInButton :Button
 
     private var selectedPhotoUri : Uri? = null
-
-    private lateinit var auth: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,8 +55,6 @@ class MainActivity : AppCompatActivity() {
         createAccountTextView = findViewById(R.id.createAccountTextView)
 
         mainLogInButton = findViewById(R.id.mainLogInButton)
-
-        auth = Firebase.auth
     }
 
     // Photo suction
@@ -113,7 +112,7 @@ class MainActivity : AppCompatActivity() {
             return false
         }
 
-        auth.createUserWithEmailAndPassword(email, password)
+        Firebase.auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener(this) { task ->
                 if (!task.isSuccessful) return@addOnCompleteListener
 
@@ -134,10 +133,15 @@ class MainActivity : AppCompatActivity() {
             return
         }
 
-        auth.signInWithEmailAndPassword(email, password)
+        Firebase.auth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     Toast.makeText(baseContext, "Authentication success", Toast.LENGTH_SHORT).show()
+
+                    // 152th line clears activity's stack
+                    val messagesActivityIntent = Intent(this, MessagesActivity::class.java)
+                    messagesActivityIntent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK.or(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    startActivity(messagesActivityIntent)
                 } else {
                     Toast.makeText(baseContext, "Authentication failed", Toast.LENGTH_SHORT).show()
                     return@addOnCompleteListener
@@ -151,7 +155,7 @@ class MainActivity : AppCompatActivity() {
 
         val fileName = UUID.randomUUID().toString()
 
-        val storageReference = FirebaseStorage.getInstance().getReference("/images/$fileName")
+        val storageReference = Firebase.storage.getReference("/images/$fileName")
         val putFileAction = storageReference.putFile(selectedPhotoUri!!)
         putFileAction.addOnSuccessListener { file ->
             Log.d("EASY", "IMAGE ${file.metadata?.path}")
@@ -168,9 +172,9 @@ class MainActivity : AppCompatActivity() {
 
     // Saving to our custom database on Firebase
     private fun saveUserToDataBase(profileImage: String) {
-        val uid = auth.uid ?: ""
+        val uid = Firebase.auth.uid ?: ""
 
-        val ref = FirebaseDatabase.getInstance().getReference("/users/$uid")
+        val ref = Firebase.database.getReference("/users/$uid")
 
         val user = User(uid, dialogRegisterName.text.toString(), profileImage)
 
