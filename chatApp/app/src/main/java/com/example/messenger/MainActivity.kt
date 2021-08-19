@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.view.WindowManager
 import android.widget.*
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
@@ -35,6 +36,10 @@ class MainActivity : AppCompatActivity() {
         supportActionBar?.hide()
         setContentView(R.layout.activity_main)
         initViews()
+
+        supportActionBar?.hide()
+
+        onTouchAnimated(createAccountTextView, mainLogInButton)
 
         createAccountTextView.setOnClickListener {
             openRegisterDialog()
@@ -91,6 +96,8 @@ class MainActivity : AppCompatActivity() {
         dialogChoosePhotoButton = view.findViewById(R.id.dialogRegisterChoosePhotoButton)
         circleImage = view.findViewById(R.id.dialogSelectedPhotoInRegister)
         dialogRegisterName = view.findViewById(R.id.dialogRegisterNameEditText)
+
+        onTouchAnimated(dialogRegisterButton, dialogChoosePhotoButton)
 
 
         dialogChoosePhotoButton.setOnClickListener {

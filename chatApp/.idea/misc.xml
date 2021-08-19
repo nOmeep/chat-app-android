@@ -8,6 +8,7 @@
         <entry key="..\:/chatApp/chat-app-android/chatApp/app/src/main/res/layout/log_in_dialog.xml" value="0.33229166666666665" />
         <entry key="..\:/chatApp/chat-app-android/chatApp/app/src/main/res/layout/register_dialog_layout.xml" value="0.33229166666666665" />
         <entry key="app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.36615384615384616" />
+        <entry key="app/src/main/res/drawable/actionbar.xml" value="0.36615384615384616" />
         <entry key="app/src/main/res/drawable/bg_linear_layout.xml" value="0.371875" />
         <entry key="app/src/main/res/drawable/create_new_acc_textview_bg.xml" value="0.371875" />
         <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.36615384615384616" />
@@ -16,6 +17,8 @@
         <entry key="app/src/main/res/drawable/round_text_view_for_acc.xml" value="0.371875" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.33" />
         <entry key="app/src/main/res/layout/activity_messages.xml" value="0.29438405797101447" />
+        <entry key="app/src/main/res/layout/activity_new_message.xml" value="0.28442028985507245" />
+        <entry key="app/src/main/res/layout/appbar.xml" value="0.27943840579710144" />
         <entry key="app/src/main/res/layout/log_in_dialog.xml" value="0.34103260869565216" />
         <entry key="app/src/main/res/layout/register_dialog_layout.xml" value="0.317481884057971" />
         <entry key="app/src/main/res/menu/menu_actions.xml" value="0.35572916666666665" />

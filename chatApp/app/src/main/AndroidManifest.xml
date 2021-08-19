@@ -11,11 +11,19 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Messenger">
         <activity
+            android:name=".NewMessageActivity"
+            android:exported="true">
+            <meta-data android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MessagesActivity"/>
+        </activity>
+        <activity
             android:name=".MessagesActivity"
             android:exported="true">
+
             <!-- main launcher -->
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
