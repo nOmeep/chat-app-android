@@ -99,7 +99,6 @@ class MainActivity : AppCompatActivity() {
 
         onTouchAnimated(dialogRegisterButton, dialogChoosePhotoButton)
 
-
         dialogChoosePhotoButton.setOnClickListener {
             getPickedPhoto.launch("image/*")
         }
@@ -163,12 +162,14 @@ class MainActivity : AppCompatActivity() {
         val fileName = UUID.randomUUID().toString()
 
         val storageReference = Firebase.storage.getReference("/images/$fileName")
+
+        // ERROR - CHANGE IT SOON
         val putFileAction = storageReference.putFile(selectedPhotoUri!!)
         putFileAction.addOnSuccessListener { file ->
             Log.d("EASY", "IMAGE ${file.metadata?.path}")
 
             storageReference.downloadUrl.addOnSuccessListener {
-                Log.d("EASY", "File loc $it")
+                Toast.makeText(baseContext, "FILE $it", Toast.LENGTH_SHORT).show()
 
                 saveUserToDataBase(it.toString())
             }
