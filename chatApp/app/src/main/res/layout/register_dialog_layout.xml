@@ -100,11 +100,11 @@
 
         <TextView
             android:id="@+id/dialogRegisterTextView"
-            android:layout_width="300dp"
+            android:layout_width="match_parent"
             android:layout_height="45dp"
             android:layout_alignParentEnd="true"
             android:layout_alignParentBottom="true"
-            android:background="@drawable/round_choose_photo_button"
+            android:background="@drawable/half_top_round_view"
             android:gravity="center"
             android:text="@string/create_new_account"
             android:textAlignment="center"
@@ -117,12 +117,12 @@
 
         <Button
             android:id="@+id/dialogRegisterRegisterButton"
-            android:layout_width="300dp"
-            android:layout_height="60dp"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
             android:layout_alignParentEnd="true"
             android:layout_alignParentBottom="true"
-            android:layout_marginTop="540dp"
-            android:background="@drawable/round_choose_photo_button"
+            android:layout_marginTop="560dp"
+            android:background="@drawable/half_bottom_round_view"
             android:text="@string/register"
             android:textAlignment="center"
             android:textColor="@color/white"
@@ -130,7 +130,8 @@
             app:layout_constraintBottom_toBottomOf="@id/innerCR"
             app:layout_constraintLeft_toLeftOf="@id/innerCR"
             app:layout_constraintRight_toRightOf="@id/innerCR"
-            app:layout_constraintTop_toBottomOf="@id/innerCR"/>
+            app:layout_constraintTop_toBottomOf="@id/innerCR"
+            app:layout_constraintVertical_bias="0.904" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
