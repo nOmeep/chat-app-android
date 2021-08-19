@@ -21,6 +21,7 @@
         <entry key="app/src/main/res/layout/appbar.xml" value="0.27943840579710144" />
         <entry key="app/src/main/res/layout/log_in_dialog.xml" value="0.34103260869565216" />
         <entry key="app/src/main/res/layout/register_dialog_layout.xml" value="0.317481884057971" />
+        <entry key="app/src/main/res/layout/user_row_new_message.xml" value="0.5" />
         <entry key="app/src/main/res/menu/menu_actions.xml" value="0.35572916666666665" />
       </map>
     </option>

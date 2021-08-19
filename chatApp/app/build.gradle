@@ -56,6 +56,12 @@ dependencies {
 
     // Firebase database
     implementation 'com.google.firebase:firebase-database-ktx'
+
+    //Groupie
+    implementation 'com.xwray:groupie:2.1.0'
+
+    //Picasso
+    implementation 'com.squareup.picasso:picasso:2.71828'
 }
 
 apply plugin: 'com.google.gms.google-services'
