@@ -1,6 +1,8 @@
 package com.example.messenger
 
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.Gravity
 import android.view.Menu
@@ -30,7 +32,8 @@ class MessagesActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_messages)
         supportActionBar?.title = "Recent messages"
-        // check if user already authorized
+        supportActionBar?.setBackgroundDrawable(ColorDrawable(Color.parseColor("#9556F1")))
+
         authorizationCheck()
     }
 
