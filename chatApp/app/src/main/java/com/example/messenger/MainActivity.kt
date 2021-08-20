@@ -1,21 +1,18 @@
 package com.example.messenger
 
+import android.content.ContentResolver
 import android.content.Intent
 import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.view.WindowManager
 import android.widget.*
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
-import com.google.firebase.auth.FirebaseAuth
+import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.ktx.auth
-import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
-import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.ktx.storage
 import de.hdodenhof.circleimageview.CircleImageView
 import java.util.*
@@ -80,6 +77,28 @@ class MainActivity : AppCompatActivity() {
 
     // Firebase and Dialogs
 
+    private fun performLogIn(email : String, password : String) {
+        if (email.isEmpty() || password.isEmpty()) {
+            Toast.makeText(this, "Fill the gaps before log in", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        Firebase.auth.signInWithEmailAndPassword(email, password)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    Toast.makeText(baseContext, "Authentication success", Toast.LENGTH_SHORT).show()
+
+                    // 152th line clears activity's stack
+                    val messagesActivityIntent = Intent(this, MessagesActivity::class.java)
+                    messagesActivityIntent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK.or(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    startActivity(messagesActivityIntent)
+                } else {
+                    Toast.makeText(baseContext, "Authentication failed", Toast.LENGTH_SHORT).show()
+                    return@addOnCompleteListener
+                }
+            }
+    }
+
     private fun openRegisterDialog() {
         val view = View.inflate(this@MainActivity, R.layout.register_dialog_layout, null)
 
@@ -133,38 +152,19 @@ class MainActivity : AppCompatActivity() {
         return true
     }
 
-    private fun performLogIn(email : String, password : String) {
-        if (email.isEmpty() || password.isEmpty()) {
-            Toast.makeText(this, "Fill the gaps before log in", Toast.LENGTH_SHORT).show()
-            return
-        }
-
-        Firebase.auth.signInWithEmailAndPassword(email, password)
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    Toast.makeText(baseContext, "Authentication success", Toast.LENGTH_SHORT).show()
-
-                    // 152th line clears activity's stack
-                    val messagesActivityIntent = Intent(this, MessagesActivity::class.java)
-                    messagesActivityIntent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK.or(Intent.FLAG_ACTIVITY_NEW_TASK)
-                    startActivity(messagesActivityIntent)
-                } else {
-                    Toast.makeText(baseContext, "Authentication failed", Toast.LENGTH_SHORT).show()
-                    return@addOnCompleteListener
-                }
-            }
-    }
-
     // Uploading image to firebase
     private fun uploadImageToStorage() {
-        if (selectedPhotoUri == null) return
-
         val fileName = UUID.randomUUID().toString()
 
         val storageReference = Firebase.storage.getReference("/images/$fileName")
 
-        // ERROR - CHANGE IT SOON
-        val putFileAction = storageReference.putFile(selectedPhotoUri!!)
+        val sampleUriUser = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE +
+                "://" + resources.getResourcePackageName(R.drawable.sample_user)
+                + '/' + resources.getResourceTypeName(R.drawable.sample_user)
+                + '/' + resources.getResourceEntryName(R.drawable.sample_user) )
+
+        val putFileAction = if (selectedPhotoUri != null) storageReference.putFile(selectedPhotoUri!!) else storageReference.putFile(sampleUriUser)
+
         putFileAction.addOnSuccessListener { file ->
             Log.d("EASY", "IMAGE ${file.metadata?.path}")
 

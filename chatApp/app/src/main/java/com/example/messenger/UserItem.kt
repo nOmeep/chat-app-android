@@ -1,5 +1,7 @@
 package com.example.messenger
 
+import android.graphics.Paint
+import android.graphics.Typeface
 import android.widget.TextView
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
@@ -11,8 +13,12 @@ import de.hdodenhof.circleimageview.CircleImageView
 class UserItem(private val user : User): Item<ViewHolder>() {
     override fun bind(viewHolder: ViewHolder, position: Int) {
         if (user.uid == Firebase.auth.uid) {
-            viewHolder.itemView.findViewById<TextView>(R.id.userNameRecycler).text = "It's me"
-            Picasso.get().load(R.drawable.me_pic).into(viewHolder.itemView.findViewById<CircleImageView>(R.id.userImageRecycler))
+            val userTextView = viewHolder.itemView.findViewById<TextView>(R.id.userNameRecycler)
+            userTextView.text = user.username
+            userTextView.setTypeface(null, Typeface.BOLD_ITALIC)
+            userTextView.paintFlags = Paint.UNDERLINE_TEXT_FLAG
+
+            Picasso.get().load(user.profileImageUrl).into(viewHolder.itemView.findViewById<CircleImageView>(R.id.userImageRecycler))
         } else {
             viewHolder.itemView.findViewById<TextView>(R.id.userNameRecycler).text = user.username
             Picasso.get().load(user.profileImageUrl).into(viewHolder.itemView.findViewById<CircleImageView>(R.id.userImageRecycler))
