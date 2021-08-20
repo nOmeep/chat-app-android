@@ -1,4 +1,4 @@
-package com.example.messenger
+package com.example.messenger.helpfulfiles
 
 import android.view.MotionEvent
 import android.view.View

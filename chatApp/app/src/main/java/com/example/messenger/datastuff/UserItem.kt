@@ -1,8 +1,9 @@
-package com.example.messenger
+package com.example.messenger.datastuff
 
 import android.graphics.Paint
 import android.graphics.Typeface
 import android.widget.TextView
+import com.example.messenger.R
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.squareup.picasso.Picasso
@@ -18,10 +19,14 @@ class UserItem(private val user : User): Item<ViewHolder>() {
             userTextView.setTypeface(null, Typeface.BOLD_ITALIC)
             userTextView.paintFlags = Paint.UNDERLINE_TEXT_FLAG
 
-            Picasso.get().load(user.profileImageUrl).into(viewHolder.itemView.findViewById<CircleImageView>(R.id.userImageRecycler))
+            Picasso.get().load(user.profileImageUrl).into(viewHolder.itemView.findViewById<CircleImageView>(
+                R.id.userImageRecycler
+            ))
         } else {
             viewHolder.itemView.findViewById<TextView>(R.id.userNameRecycler).text = user.username
-            Picasso.get().load(user.profileImageUrl).into(viewHolder.itemView.findViewById<CircleImageView>(R.id.userImageRecycler))
+            Picasso.get().load(user.profileImageUrl).into(viewHolder.itemView.findViewById<CircleImageView>(
+                R.id.userImageRecycler
+            ))
         }
     }
 

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.messenger">
+    package="com.example.messenger" >
 
     <application
         android:allowBackup="true"
@@ -9,10 +9,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:screenOrientation="sensorPortrait"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Messenger">
+        android:theme="@style/Theme.Messenger" >
         <activity
-            android:name=".MessagesActivity"
-            android:exported="true">
+            android:name=".msgstuff.ChatActivity"
+            android:exported="true" />
+        <activity
+            android:name=".msgstuff.MessagesActivity"
+            android:exported="true" >
 
             <!-- main launcher -->
             <intent-filter>
@@ -22,8 +25,8 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".MainActivity"
-            android:exported="true">
+            android:name=".registerandlogin.MainActivity"
+            android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

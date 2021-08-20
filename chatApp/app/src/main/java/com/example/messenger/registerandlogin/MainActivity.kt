@@ -1,4 +1,4 @@
-package com.example.messenger
+package com.example.messenger.registerandlogin
 
 import android.content.ContentResolver
 import android.content.Intent
@@ -10,6 +10,10 @@ import android.widget.*
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import com.example.messenger.msgstuff.MessagesActivity
+import com.example.messenger.R
+import com.example.messenger.datastuff.User
+import com.example.messenger.helpfulfiles.onTouchAnimated
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase

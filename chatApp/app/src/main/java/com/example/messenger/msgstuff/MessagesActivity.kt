@@ -1,22 +1,23 @@
-package com.example.messenger
+package com.example.messenger.msgstuff
 
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.view.Gravity
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.Button
-import android.widget.EditText
-import android.widget.FrameLayout
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
+import com.example.messenger.R
+import com.example.messenger.datastuff.User
+import com.example.messenger.datastuff.UserItem
+import com.example.messenger.helpfulfiles.onTouchAnimated
+import com.example.messenger.registerandlogin.MainActivity
 import com.google.firebase.auth.ktx.auth
-import com.google.firebase.database.ChildEventListener
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
@@ -62,7 +63,7 @@ class MessagesActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.logOutMenuButton -> {
-                val view = View.inflate(this@MessagesActivity, R.layout.cinfirm_log_out_dialog, null)
+                val view = View.inflate(this@MessagesActivity, R.layout.confirm_log_out_dialog, null)
                 val builder =  AlertDialog.Builder(this@MessagesActivity)
                 builder.setView(view)
 
@@ -111,6 +112,12 @@ class MessagesActivity : AppCompatActivity() {
             recyclerAdapter.clear()
         }
 
+        recyclerAdapter.setOnItemClickListener { _, _ ->
+            dialog.dismiss()
+            val startChattingIntent = Intent(this@MessagesActivity, ChatActivity::class.java)
+            startActivity(startChattingIntent)
+        }
+
         dialog.show()
     }
 
@@ -120,11 +127,8 @@ class MessagesActivity : AppCompatActivity() {
         databaseReference.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 recyclerAdapter.clear()
-
                 snapshot.children.forEach { child ->
                     val currUser = child.getValue(User::class.java)
-
-
                     if (currUser != null) {
                         recyclerAdapter.add(UserItem(currUser))
                     }
