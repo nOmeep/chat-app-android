@@ -2,9 +2,13 @@ package com.example.messenger
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.Gravity
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.Button
+import android.widget.EditText
+import android.widget.FrameLayout
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -53,8 +57,29 @@ class MessagesActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.logOutMenuButton -> {
-                Firebase.auth.signOut()
-                exitFromActivity()
+                val view = View.inflate(this@MessagesActivity, R.layout.cinfirm_log_out_dialog, null)
+                val builder =  AlertDialog.Builder(this@MessagesActivity)
+                builder.setView(view)
+
+                val dialog = builder.create()
+                dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+                dialog.setCancelable(true)
+
+                val yesButton : Button = view.findViewById(R.id.yesButtonConfirmDialog)
+                val noButton : Button = view.findViewById(R.id.noButtonConfirmDialog)
+
+                onTouchAnimated(yesButton, noButton)
+
+                yesButton.setOnClickListener {
+                    Firebase.auth.signOut()
+                    exitFromActivity()
+                }
+
+                noButton.setOnClickListener {
+                    dialog.dismiss()
+                }
+
+                dialog.show()
             }
             R.id.newMessageMenuButton -> {
                 createNewMessageDialog()
