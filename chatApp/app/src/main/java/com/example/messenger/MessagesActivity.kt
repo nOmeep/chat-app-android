@@ -16,6 +16,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.database.ChildEventListener
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
@@ -27,6 +28,7 @@ import com.xwray.groupie.ViewHolder
 class MessagesActivity : AppCompatActivity() {
     private lateinit var dialogChooseUserRecycler : RecyclerView
     private val recyclerAdapter = GroupAdapter<ViewHolder>()
+    private var currentUid : String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,9 +47,9 @@ class MessagesActivity : AppCompatActivity() {
     }
 
     private fun authorizationCheck() {
-        val uid = Firebase.auth.uid
+        currentUid = Firebase.auth.uid
 
-        if (uid == null) {
+        if (currentUid == null) {
             exitFromActivity()
         }
     }
@@ -113,12 +115,15 @@ class MessagesActivity : AppCompatActivity() {
     }
 
     private fun getUsersFromDatabase() {
-
         val databaseReference = Firebase.database.getReference("/users")
+
         databaseReference.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
+                recyclerAdapter.clear()
+
                 snapshot.children.forEach { child ->
                     val currUser = child.getValue(User::class.java)
+
 
                     if (currUser != null) {
                         recyclerAdapter.add(UserItem(currUser))

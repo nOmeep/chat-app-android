@@ -38,10 +38,11 @@
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/dialogNewMessageRecyclerView"
-
                 android:layout_width="match_parent"
-
                 android:layout_height="match_parent"
+
+                android:layoutAnimation="@anim/layout_recycler_animation"
+
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
