@@ -9,4 +9,5 @@
     <color name="white">#FFFFFFFF</color>
     <color name="main_activity_bg">#A8CAEA</color>
     <color name="btn_color">#81D4FA</color>
+    <color name="message_activity_buttons_bg">#8EBBE6</color>
 </resources>

@@ -14,7 +14,11 @@
         android:theme="@style/Theme.Messenger" >
         <activity
             android:name=".msgstuff.ChatActivity"
-            android:exported="true" />
+            android:exported="true">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".msgstuff.MessagesActivity"/>
+        </activity>
         <activity
             android:name=".msgstuff.MessagesActivity"
             android:exported="true" >

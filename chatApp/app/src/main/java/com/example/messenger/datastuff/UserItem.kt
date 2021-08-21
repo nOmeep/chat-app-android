@@ -11,7 +11,7 @@ import com.xwray.groupie.Item
 import com.xwray.groupie.ViewHolder
 import de.hdodenhof.circleimageview.CircleImageView
 
-class UserItem(private val user : User): Item<ViewHolder>() {
+class UserItem(val user : User): Item<ViewHolder>() {
     override fun bind(viewHolder: ViewHolder, position: Int) {
         if (user.uid == Firebase.auth.uid) {
             val userTextView = viewHolder.itemView.findViewById<TextView>(R.id.userNameRecycler)

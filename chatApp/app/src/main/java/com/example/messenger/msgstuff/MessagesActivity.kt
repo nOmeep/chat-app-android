@@ -25,6 +25,7 @@ import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.ViewHolder
+import java.util.*
 
 class MessagesActivity : AppCompatActivity() {
     private lateinit var dialogChooseUserRecycler : RecyclerView
@@ -106,15 +107,21 @@ class MessagesActivity : AppCompatActivity() {
         dialog.setCancelable(true)
 
         dialogChooseUserRecycler = view.findViewById(R.id.dialogNewMessageRecyclerView)
+        dialogChooseUserRecycler.adapter = recyclerAdapter
         getUsersFromDatabase()
+
 
         dialog.setOnDismissListener {
             recyclerAdapter.clear()
         }
 
-        recyclerAdapter.setOnItemClickListener { _, _ ->
+        recyclerAdapter.setOnItemClickListener { item, _ ->
             dialog.dismiss()
+
+            val clickedUser = item as UserItem
+
             val startChattingIntent = Intent(this@MessagesActivity, ChatActivity::class.java)
+            startChattingIntent.putExtra("PICKED_USER", clickedUser.user)
             startActivity(startChattingIntent)
         }
 
@@ -127,14 +134,13 @@ class MessagesActivity : AppCompatActivity() {
         databaseReference.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 recyclerAdapter.clear()
+
                 snapshot.children.forEach { child ->
                     val currUser = child.getValue(User::class.java)
                     if (currUser != null) {
                         recyclerAdapter.add(UserItem(currUser))
                     }
                 }
-
-                dialogChooseUserRecycler.adapter = recyclerAdapter
             }
 
             override fun onCancelled(error: DatabaseError) {

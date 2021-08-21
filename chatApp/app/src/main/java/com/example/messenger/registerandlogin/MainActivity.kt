@@ -186,7 +186,7 @@ class MainActivity : AppCompatActivity() {
     private fun saveUserToDataBase(profileImage: String) {
         val uid = Firebase.auth.uid ?: ""
 
-        val ref = Firebase.database.getReference("/users/$uid")
+        val ref = Firebase.database.getReference("/users/$uid").push()
 
         val user = User(uid, dialogRegisterName.text.toString(), profileImage)
 
