@@ -52,6 +52,7 @@ class ChatActivity : AppCompatActivity() {
         sendButton.setOnClickListener {
             if (messageEditText.text.toString().isNotEmpty()) {
                 sendMessage()
+                messageEditText.text.clear()
             } else {
                 Toast.makeText(this, "fill the message gap", Toast.LENGTH_SHORT).show()
             }
