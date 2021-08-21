@@ -17,6 +17,7 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.ChildEventListener
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.xwray.groupie.GroupAdapter
@@ -24,6 +25,7 @@ import com.xwray.groupie.ViewHolder
 
 class ChatActivity : AppCompatActivity() {
     private var chattingWithUser : User? = null
+    private var self : User? = null
 
     private lateinit var sendButton : Button
     private lateinit var messageEditText : EditText
@@ -34,12 +36,29 @@ class ChatActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_chat)
+
         chattingWithUser = intent.getParcelableExtra("PICKED_USER")
+        getSelf()
+
         supportActionBar?.setBackgroundDrawable(ColorDrawable(Color.parseColor("#9556F1")))
         supportActionBar?.title = chattingWithUser?.username
 
         init()
         startMessaging()
+    }
+
+    private fun getSelf() {
+        val databaseReference = Firebase.database.getReference("/users/${Firebase.auth.uid}")
+        databaseReference.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                self = snapshot.getValue(User::class.java)
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+
+            }
+
+        })
     }
 
     private fun init() {
@@ -84,10 +103,10 @@ class ChatActivity : AppCompatActivity() {
 
                 if (currChatMessage != null) {
                     if (currChatMessage.senderId == Firebase.auth.uid) {
-                        adapter.add(ChatUserOwnItem(currChatMessage.message))
+                        adapter.add(ChatUserOwnItem(currChatMessage.message, self!!))
                         chatRecycler.scrollToPosition(adapter.itemCount - 1)
                     } else {
-                        adapter.add(ChatCompanionItem(currChatMessage.message))
+                        adapter.add(ChatCompanionItem(currChatMessage.message, chattingWithUser!!))
                     }
                 }
             }

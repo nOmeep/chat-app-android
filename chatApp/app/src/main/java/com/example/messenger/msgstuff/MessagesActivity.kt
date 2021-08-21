@@ -108,12 +108,6 @@ class MessagesActivity : AppCompatActivity() {
 
         dialogChooseUserRecycler = view.findViewById(R.id.dialogNewMessageRecyclerView)
         dialogChooseUserRecycler.adapter = recyclerAdapter
-        getUsersFromDatabase()
-
-
-        dialog.setOnDismissListener {
-            recyclerAdapter.clear()
-        }
 
         recyclerAdapter.setOnItemClickListener { item, _ ->
             dialog.dismiss()
@@ -126,6 +120,8 @@ class MessagesActivity : AppCompatActivity() {
         }
 
         dialog.show()
+
+        getUsersFromDatabase()
     }
 
     private fun getUsersFromDatabase() {
