@@ -8,6 +8,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.Button
+import android.widget.EditText
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
@@ -22,10 +23,12 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.ChildEventListener
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.ViewHolder
+import kotlinx.android.synthetic.main.new_messages_dialog_layout.*
 import java.util.*
 import kotlin.collections.HashMap
 
@@ -163,7 +166,7 @@ class MessagesActivity : AppCompatActivity() {
                 createNewMessageDialog()
             }
             R.id.addFriendMenuButton -> {
-                createAddFriendDialog()
+                //createAddFriendDialog()
             }
         }
 
@@ -171,7 +174,28 @@ class MessagesActivity : AppCompatActivity() {
     }
 
     private fun createAddFriendDialog() {
+        val view = View.inflate(this@MessagesActivity, R.layout.add_friend_dialog_layout, null)
+        val builder = AlertDialog.Builder(this@MessagesActivity)
+        builder.setView(view)
+        val dialog = builder.create()
+        dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+        dialog.setCancelable(true)
 
+        val addNewFriendEditText : EditText = view.findViewById(R.id.addFriendEditText)
+        val addNewFriendByIdButton : Button = view.findViewById(R.id.addByUidButton)
+
+        addNewFriendByIdButton.setOnClickListener {
+            if (addNewFriendEditText.text.toString().isNotEmpty()) {
+                addFriendToDatabase(addNewFriendEditText.text.toString())
+            }
+        }
+
+        dialog.show()
+    }
+
+    private fun addFriendToDatabase(uid : String) {
+        val friendsDatabaseReference = Firebase.database.getReference("/friend-list/$currentUid")
+        friendsDatabaseReference.child(uid).setValue(uid)
     }
 
     private fun createNewMessageDialog() {
