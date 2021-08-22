@@ -8,10 +8,8 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.Button
-import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
 import com.example.messenger.R
 import com.example.messenger.datastuff.ChatMessage
@@ -164,9 +162,16 @@ class MessagesActivity : AppCompatActivity() {
             R.id.newMessageMenuButton -> {
                 createNewMessageDialog()
             }
+            R.id.addFriendMenuButton -> {
+                createAddFriendDialog()
+            }
         }
 
         return super.onOptionsItemSelected(item)
+    }
+
+    private fun createAddFriendDialog() {
+
     }
 
     private fun createNewMessageDialog() {

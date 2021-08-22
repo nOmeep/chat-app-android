@@ -3,9 +3,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
+        android:id="@+id/addFriendMenuButton"
+        android:title="New friend"
+        android:icon="@drawable/add_user_icon"
+        app:showAsAction="ifRoom"/>
+
+    <item
         android:id="@+id/newMessageMenuButton"
         android:title="New message"
-        android:icon="@drawable/add_new_message"
+        android:icon="@drawable/new_message_icon"
         app:showAsAction="ifRoom"/>
 
     <item
