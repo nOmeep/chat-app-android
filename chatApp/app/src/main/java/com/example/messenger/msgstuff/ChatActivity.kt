@@ -83,20 +83,27 @@ class ChatActivity : AppCompatActivity() {
         val receiverId = chattingWithUser?.uid.toString()
         val message = messageEditText.text.toString()
 
-        val databaseReference = Firebase.database.getReference("/messages").push()
+        val databaseReference = Firebase.database.getReference("/messages/$senderId/$receiverId").push()
+        val additionalReference = Firebase.database.getReference("/messages/$receiverId/$senderId").push()
 
         val currentMessage = ChatMessage(databaseReference.key!!, senderId, receiverId, message, System.currentTimeMillis() / 1000)
 
         databaseReference.setValue(currentMessage).addOnSuccessListener {
             Toast.makeText(this, "sent to database", Toast.LENGTH_SHORT).show()
         }
+
+        if (senderId != receiverId) {
+            additionalReference.setValue(currentMessage)
+        }
     }
 
     // Fetch messages
 
     private fun startMessaging() {
+        val senderId = Firebase.auth.uid.toString()
+        val receiverId = chattingWithUser?.uid.toString()
 
-        val databaseReference = Firebase.database.getReference("/messages")
+        val databaseReference = Firebase.database.getReference("/messages/$senderId/$receiverId")
         databaseReference.addChildEventListener(object : ChildEventListener {
             override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
                 val currChatMessage = snapshot.getValue(ChatMessage::class.java)
