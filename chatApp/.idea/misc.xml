@@ -3,10 +3,23 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/chatApp/chat-app-android/chatApp/app/src/main/res/drawable/half_bottom_round_view.xml" value="0.5703125" />
+        <entry key="..\:/chatApp/chat-app-android/chatApp/app/src/main/res/drawable/half_bottom_round_view_for_confirm_dialog.xml" value="0.5703125" />
+        <entry key="..\:/chatApp/chat-app-android/chatApp/app/src/main/res/drawable/half_top_round_view.xml" value="0.5703125" />
         <entry key="..\:/chatApp/chat-app-android/chatApp/app/src/main/res/drawable/round_choose_photo_button.xml" value="0.5703125" />
+        <entry key="..\:/chatApp/chat-app-android/chatApp/app/src/main/res/drawable/round_element_in_chat.xml" value="0.5703125" />
+        <entry key="..\:/chatApp/chat-app-android/chatApp/app/src/main/res/drawable/round_element_in_recent_messages.xml" value="0.5703125" />
+        <entry key="..\:/chatApp/chat-app-android/chatApp/app/src/main/res/layout/activity_chat.xml" value="0.4266304347826087" />
         <entry key="..\:/chatApp/chat-app-android/chatApp/app/src/main/res/layout/activity_main.xml" value="0.33229166666666665" />
+        <entry key="..\:/chatApp/chat-app-android/chatApp/app/src/main/res/layout/activity_messages.xml" value="0.5541666666666667" />
+        <entry key="..\:/chatApp/chat-app-android/chatApp/app/src/main/res/layout/companion_chat_row.xml" value="0.5541666666666667" />
+        <entry key="..\:/chatApp/chat-app-android/chatApp/app/src/main/res/layout/confirm_log_out_dialog.xml" value="0.5541666666666667" />
         <entry key="..\:/chatApp/chat-app-android/chatApp/app/src/main/res/layout/log_in_dialog.xml" value="0.33229166666666665" />
+        <entry key="..\:/chatApp/chat-app-android/chatApp/app/src/main/res/layout/new_messages_dialog_layout.xml" value="0.5541666666666667" />
+        <entry key="..\:/chatApp/chat-app-android/chatApp/app/src/main/res/layout/recent_messages_row.xml" value="0.5541666666666667" />
         <entry key="..\:/chatApp/chat-app-android/chatApp/app/src/main/res/layout/register_dialog_layout.xml" value="0.33229166666666665" />
+        <entry key="..\:/chatApp/chat-app-android/chatApp/app/src/main/res/layout/user_own_chat_row.xml" value="0.4266304347826087" />
+        <entry key="..\:/chatApp/chat-app-android/chatApp/app/src/main/res/layout/user_row_new_message.xml" value="0.5541666666666667" />
         <entry key="app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.36615384615384616" />
         <entry key="app/src/main/res/drawable/actionbar.xml" value="0.36615384615384616" />
         <entry key="app/src/main/res/drawable/bg_linear_layout.xml" value="0.371875" />

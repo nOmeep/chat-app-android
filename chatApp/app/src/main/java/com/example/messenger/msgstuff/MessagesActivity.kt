@@ -11,25 +11,33 @@ import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
 import com.example.messenger.R
+import com.example.messenger.datastuff.ChatMessage
+import com.example.messenger.datastuff.RecentMessagesItem
 import com.example.messenger.datastuff.User
 import com.example.messenger.datastuff.UserItem
 import com.example.messenger.helpfulfiles.onTouchAnimated
 import com.example.messenger.registerandlogin.MainActivity
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.database.ChildEventListener
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.ViewHolder
 import java.util.*
+import kotlin.collections.HashMap
 
 class MessagesActivity : AppCompatActivity() {
+    private lateinit var recentMessagesRecyclerView : RecyclerView
+    private val adapterForRecentMessagesRecycler = GroupAdapter<ViewHolder>()
+
     private lateinit var dialogChooseUserRecycler : RecyclerView
-    private val recyclerAdapter = GroupAdapter<ViewHolder>()
+    private val recyclerChooseUserAdapter = GroupAdapter<ViewHolder>()
+
     private var currentUid : String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,13 +47,8 @@ class MessagesActivity : AppCompatActivity() {
         supportActionBar?.setBackgroundDrawable(ColorDrawable(Color.parseColor("#9556F1")))
 
         authorizationCheck()
-    }
 
-    // goTo log in activity(Log out)
-    private fun exitFromActivity() {
-        val loginActivity = Intent(this, MainActivity::class.java)
-        loginActivity.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK.or(Intent.FLAG_ACTIVITY_NEW_TASK)
-        startActivity(loginActivity)
+        createRecentMessagesRecycler()
     }
 
     private fun authorizationCheck() {
@@ -54,6 +57,76 @@ class MessagesActivity : AppCompatActivity() {
         if (currentUid == null) {
             exitFromActivity()
         }
+    }
+
+    private fun exitFromActivity() {
+        val loginActivity = Intent(this, MainActivity::class.java)
+        loginActivity.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK.or(Intent.FLAG_ACTIVITY_NEW_TASK)
+        startActivity(loginActivity)
+    }
+
+    private fun createRecentMessagesRecycler() {
+        recentMessagesRecyclerView = findViewById(R.id.recentMessagesRecycler)
+        recentMessagesRecyclerView.adapter = adapterForRecentMessagesRecycler
+
+        seRecyclerAdapterItemClickListener(adapterForRecentMessagesRecycler)
+
+        getRecentMessages()
+    }
+
+    private fun seRecyclerAdapterItemClickListener(tmpAdapter: GroupAdapter<ViewHolder>) {
+        tmpAdapter.setOnItemClickListener { item, _ ->
+            val user = item as RecentMessagesItem
+
+            val startChattingIntent = Intent(this@MessagesActivity, ChatActivity::class.java)
+            startChattingIntent.putExtra("PICKED_USER", user.companionUser)
+            startActivity(startChattingIntent)
+        }
+    }
+
+    val recentMessagesMap = HashMap<String, ChatMessage>()
+    private fun mapRefreshMagic() {
+        adapterForRecentMessagesRecycler.clear()
+
+        recentMessagesMap.forEach { msg ->
+            adapterForRecentMessagesRecycler.add(RecentMessagesItem(msg.value))
+        }
+    }
+
+
+    private fun getRecentMessages() {
+        val recentMessagesDatabase = Firebase.database.getReference("/recent_messages/$currentUid")
+        recentMessagesDatabase.addChildEventListener(object : ChildEventListener {
+            override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
+                val message = snapshot.getValue(ChatMessage::class.java)
+
+                if (message != null) {
+                    recentMessagesMap[snapshot.key!!] = message
+                    mapRefreshMagic()
+                }
+            }
+
+            override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {
+                val message = snapshot.getValue(ChatMessage::class.java)
+                if (message != null) {
+                    mapRefreshMagic()
+                    adapterForRecentMessagesRecycler.add(RecentMessagesItem(message))
+                }
+            }
+
+            override fun onChildRemoved(snapshot: DataSnapshot) {
+
+            }
+
+            override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {
+
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+
+            }
+
+        })
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -107,9 +180,9 @@ class MessagesActivity : AppCompatActivity() {
         dialog.setCancelable(true)
 
         dialogChooseUserRecycler = view.findViewById(R.id.dialogNewMessageRecyclerView)
-        dialogChooseUserRecycler.adapter = recyclerAdapter
+        dialogChooseUserRecycler.adapter = recyclerChooseUserAdapter
 
-        recyclerAdapter.setOnItemClickListener { item, _ ->
+        recyclerChooseUserAdapter.setOnItemClickListener { item, _ ->
             dialog.dismiss()
 
             val clickedUser = item as UserItem
@@ -119,14 +192,45 @@ class MessagesActivity : AppCompatActivity() {
             startActivity(startChattingIntent)
         }
 
+        dialog.setOnDismissListener {
+            recyclerChooseUserAdapter.clear()
+        }
+
         dialog.show()
 
         getUsersFromDatabase()
     }
 
     private fun getUsersFromDatabase() {
-        val databaseReference = Firebase.database.getReference("/users")
+        val databaseReference = Firebase.database.getReference("/users/")
 
+        databaseReference.addChildEventListener(object : ChildEventListener {
+            override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
+                val currUser = snapshot.getValue(User::class.java)
+
+                if (currUser != null && currUser.uid != Firebase.auth.uid.toString()) {
+                    recyclerChooseUserAdapter.add(UserItem(currUser))
+                }
+            }
+
+            override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {
+
+            }
+
+            override fun onChildRemoved(snapshot: DataSnapshot) {
+
+            }
+
+            override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {
+
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+
+            }
+
+        })
+/*
         databaseReference.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 recyclerAdapter.clear()
@@ -143,5 +247,7 @@ class MessagesActivity : AppCompatActivity() {
                 Toast.makeText(this@MessagesActivity, "Something went wrong", Toast.LENGTH_SHORT).show()
             }
         })
+
+ */
     }
 }

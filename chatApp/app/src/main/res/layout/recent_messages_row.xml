@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="100dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/round_element_in_recent_messages"
+    android:layout_marginTop="3.5dp"
+    android:layout_marginLeft="2.5dp"
+    android:layout_marginRight="2.5dp"
+    android:layout_marginBottom="3.5dp">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/recentDialogUserImageView"
+
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+
+        android:layout_marginLeft="16dp"
+
+        android:src="@drawable/sample_user"
+        app:civ_border_width="1dp"
+        app:civ_border_color="@color/purple_200"
+
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/recentMessageUserNameTextView" />
+
+    <TextView
+        android:id="@+id/recentMessageUserNameTextView"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="28dp"
+        android:layout_marginTop="16dp"
+
+        android:text="Username"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/recentDialogUserImageView"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/recentMessageLastMessageTextView"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:layout_marginStart="115dp"
+        android:text="Last message"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+
+        android:textStyle="italic"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.119"
+        app:layout_constraintLeft_toRightOf="@id/recentDialogUserImageView"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/recentMessageUserNameTextView"
+        app:layout_constraintVertical_bias="0.317" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

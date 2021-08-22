@@ -17,12 +17,9 @@
             android:layout_width="match_parent"
             android:layout_height="40dp"
 
-            android:layout_marginStart="15dp"
-            android:layout_marginEnd="15dp"
-
-            android:background="@drawable/round_purple_view"
+            android:background="@drawable/half_top_round_view"
             android:gravity="center"
-            android:text="Do you really want to exit?"
+            android:text="Quit?"
             android:textColor="@color/white"
             android:textSize="20sp"
 
@@ -37,7 +34,7 @@
             android:layout_centerVertical="true"
             android:layout_marginTop="44dp"
             android:layout_marginBottom="44dp"
-            android:background="@drawable/round_edit_text"
+            android:background="@drawable/half_bottom_round_view_for_confirm_dialog"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

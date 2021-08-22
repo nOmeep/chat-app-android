@@ -49,7 +49,7 @@ class ChatActivity : AppCompatActivity() {
 
     private fun getSelf() {
         val databaseReference = Firebase.database.getReference("/users/${Firebase.auth.uid}")
-        databaseReference.addListenerForSingleValueEvent(object : ValueEventListener {
+        databaseReference.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 self = snapshot.getValue(User::class.java)
             }
@@ -95,6 +95,9 @@ class ChatActivity : AppCompatActivity() {
         if (senderId != receiverId) {
             additionalReference.setValue(currentMessage)
         }
+
+        Firebase.database.getReference("/recent_messages/$senderId/$receiverId").setValue(currentMessage)
+        Firebase.database.getReference("/recent_messages/$receiverId/$senderId").setValue(currentMessage)
     }
 
     // Fetch messages
@@ -116,6 +119,8 @@ class ChatActivity : AppCompatActivity() {
                         adapter.add(ChatCompanionItem(currChatMessage.message, chattingWithUser!!))
                     }
                 }
+
+                chatRecycler.scrollToPosition(adapter.itemCount - 1)
             }
 
             override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {
